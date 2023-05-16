@@ -1,0 +1,126 @@
+{
+  "version": 3,
+  "targets": {
+    "net6.0": {
+      "NModbus/3.0.78": {
+        "type": "package",
+        "compile": {
+          "lib/net6.0/NModbus.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net6.0/NModbus.dll": {
+            "related": ".xml"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "NModbus/3.0.78": {
+      "sha512": "PaD04BCM6hQO7mmTblHuUUKCnji8abw5/LME3g/OP9FVCwkwEE+tRqMRgF4G8+gAZXVL+E4kgUrOZCwvdZUvbQ==",
+      "type": "package",
+      "path": "nmodbus/3.0.78",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "lib/net46/NModbus.dll",
+        "lib/net46/NModbus.xml",
+        "lib/net6.0/NModbus.dll",
+        "lib/net6.0/NModbus.xml",
+        "lib/netstandard1.3/NModbus.dll",
+        "lib/netstandard1.3/NModbus.xml",
+        "lib/netstandard2.0/NModbus.dll",
+        "lib/netstandard2.0/NModbus.xml",
+        "nmodbus.3.0.78.nupkg.sha512",
+        "nmodbus.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    "net6.0": [
+      "NModbus >= 3.0.78"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\a00542157\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\Users\\a00542157\\source\\repos\\ModbusSimulator\\ModbusExampleSlave\\ModbusExampleSlave.csproj",
+      "projectName": "ModbusExampleSlave",
+      "projectPath": "C:\\Users\\a00542157\\source\\repos\\ModbusSimulator\\ModbusExampleSlave\\ModbusExampleSlave.csproj",
+      "packagesPath": "C:\\Users\\a00542157\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\a00542157\\source\\repos\\ModbusSimulator\\ModbusExampleSlave\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\a00542157\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net6.0"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
+        "http://10.49.93.42:8080/repository/nuget-hosted/index.json": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net6.0": {
+        "targetAlias": "net6.0",
+        "dependencies": {
+          "NModbus": {
+            "target": "Package",
+            "version": "[3.0.78, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48",
+          "net481"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
+      }
+    }
+  },
+  "logs": [
+    {
+      "code": "NU1803",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "You are running the 'restore' operation with an 'HTTP' source, 'http://10.49.93.42:8080/repository/nuget-hosted/index.json'. Non-HTTPS access will be removed in a future version. Consider migrating to an 'HTTPS' source."
+    }
+  ]
+}

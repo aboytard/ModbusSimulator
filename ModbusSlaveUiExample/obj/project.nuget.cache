@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "I3tK6x74L8A0vDvIRNaXvjQtvjcFyt84haVc/g2Vy5mATLOA73otCIsSxgHMCT08SH4vCiU+nFN8GXxOB62FEw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\a00542157\\source\\prototypes\\ModbusExampleMaster\\ModbusSlaveUiExample\\ModbusSlaveUiExample.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\a00542157\\.nuget\\packages\\nmodbus\\3.0.78\\nmodbus.3.0.78.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1803",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "You are running the 'restore' operation with an 'HTTP' source, 'http://10.49.93.42:8080/repository/nuget-hosted/index.json'. Non-HTTPS access will be removed in a future version. Consider migrating to an 'HTTPS' source."
+    }
+  ]
+}

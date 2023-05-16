@@ -1,0 +1,87 @@
+﻿<Window x:Class="ModbusSlaveUi.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ModbusSlaveUi"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="526" Width="899">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15*"/>
+            <ColumnDefinition Width="17*"/>
+            <ColumnDefinition Width="8*"/>
+        </Grid.ColumnDefinitions>
+        <Label x:Name="Lb_Output" Content="Output Bits" HorizontalAlignment="Left" Height="24" Margin="49,16,0,0" VerticalAlignment="Top" Width="70" Grid.Column="2"/>
+        <Label x:Name="Lb_InputWords" Content="Input Words:" HorizontalAlignment="Left" Height="24" Margin="64,30,0,0" VerticalAlignment="Top" Width="81" Grid.Column="1"/>
+        <Button x:Name="Btn_SendMessage" Content="Send Message" HorizontalAlignment="Left" Height="32" Margin="287,186,0,0" VerticalAlignment="Top" Width="96" Click="Btn_SendMessage_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="Tbl_Infos" HorizontalAlignment="Left" Height="350" Margin="14,117,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="560" Text="Infos :" Grid.ColumnSpan="2"/>
+        <Button x:Name="Btn_Start" Content="Start" HorizontalAlignment="Left" Height="36" Margin="179,23,0,0" VerticalAlignment="Top" Width="94" Click="Btn_Start_Click"/>
+
+        <Rectangle x:Name="Body" Fill="Gray" Stroke="Black" StrokeThickness="2" Margin="105,353,30,10" Grid.Column="2"/>
+        <Ellipse x:Name="RedLight" Fill="Red" Stroke="Black" StrokeThickness="2" Margin="108,353,30,88" Grid.Column="2"/>
+        <Ellipse x:Name="YellowLight" Fill="Yellow" Stroke="Black" StrokeThickness="2" Margin="108,394,30,36" Grid.Column="2"/>
+        <Ellipse x:Name="GreenLight" Fill="Green" Stroke="Black" StrokeThickness="2" Margin="108,434,30,10" Grid.Column="2"/>
+
+        <ListBox x:Name="myListBoxInputBits" ItemsSource="{Binding MyInputBits}" SelectionMode="Single" Margin="163,16,128,412" SelectionChanged="myListBoxInputBits_SelectionChanged" Grid.Column="1">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox x:Name="myListBoxStackLightColor" ItemsSource="{Binding MyStackLightColors}" SelectionMode="Single" Margin="330,350,179,99" Grid.Column="1" Grid.ColumnSpan="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox x:Name="myListBoxStackLightInputBits" ItemsSource="{Binding MyStackLightInputBits}" SelectionMode="Single" Margin="330,288,5,167" Grid.Column="1" >
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <ListBox x:Name="myListBoxOutputBits" ItemsSource="{Binding MyOutputBits}" SelectionMode="Multiple" Margin="50,37,40,308" SelectionChanged="myListBoxOutputBits_SelectionChanged" Grid.Column="2">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <TextBox x:Name="Tb_StartAdress" HorizontalAlignment="Left" Height="33" Margin="299,48,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="55" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label x:Name="Lb_StartAdress" Content="Start Adress :" HorizontalAlignment="Left" Height="33" Margin="287,22,0,0" VerticalAlignment="Top" Width="78" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Button x:Name="Btn_ClearLogs" Content="Clear Logs" HorizontalAlignment="Left" Height="30" Margin="64,68,0,0" VerticalAlignment="Top" Width="94" Click="Btn_ClearLogs_Click" Grid.Column="1"/>
+        <Button x:Name="Btn_AddOutputBit" Content="Add to Output" HorizontalAlignment="Left" Height="28" Margin="288,145,0,0" VerticalAlignment="Top" Width="89" Click="Btn_AddOutputBit_Click" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBlock x:Name="Tbl_OutputBits" HorizontalAlignment="Left" Height="29" Margin="293,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="84" RenderTransformOrigin="0.575,0.592" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label x:Name="Lb_OutputBits" Content="Output :" HorizontalAlignment="Left" Height="29" Margin="287,88,0,0" VerticalAlignment="Top" Width="57" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label x:Name="Lb_Ip" Content="Ip :" HorizontalAlignment="Left" Height="31" Margin="10,14,0,0" VerticalAlignment="Top" Width="31"/>
+        <Label x:Name="Lb_Port" Content="Port : " HorizontalAlignment="Left" Height="30" Margin="10,54,0,0" VerticalAlignment="Top" Width="45"/>
+        <Button x:Name="Btn_Stop" Content="Stop" HorizontalAlignment="Left" Height="32" Margin="179,69,0,0" VerticalAlignment="Top" Width="94" Click="Btn_Stop_Click"/>
+        <TextBox x:Name="Tb_Ip" HorizontalAlignment="Left" Height="27" Margin="55,20,0,0" TextWrapping="Wrap" Text="0.0.0.0" VerticalAlignment="Top" Width="92"/>
+        <TextBox x:Name="Tb_Port" HorizontalAlignment="Left" Height="26" Margin="60,59,0,0" TextWrapping="Wrap" Text="502" VerticalAlignment="Top" Width="87"/>
+        <Label x:Name="Lb_ConfigureStacklight" Content="Configure Stacklight" HorizontalAlignment="Left" Height="27" Margin="276,232,0,0" VerticalAlignment="Top" Width="123" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="Tb_SLIntactive" HorizontalAlignment="Left" Height="23" Margin="335,449,0,0" TextWrapping="Wrap" Text="600" VerticalAlignment="Top" Width="79" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <TextBox x:Name="Tb_SLActive" HorizontalAlignment="Left" Height="21" Margin="334,421,0,0" TextWrapping="Wrap" Text="400" VerticalAlignment="Top" Width="79" RenderTransformOrigin="0.5,0.5" Grid.Column="1" Grid.ColumnSpan="2">
+            <TextBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="0.459"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBox.RenderTransform>
+        </TextBox>
+        <Label x:Name="LB_Active" Content="Active :" HorizontalAlignment="Left" Height="25" Margin="276,419,0,0" VerticalAlignment="Top" Width="52" Grid.Column="1"/>
+        <Label x:Name="Lb_Inactive" Content="Inactive :" HorizontalAlignment="Left" Height="27" Margin="275,445,0,0" VerticalAlignment="Top" Width="60" Grid.Column="1"/>
+        <Label x:Name="Lb_BitAssignToStackLight" Content="Bit :" HorizontalAlignment="Left" Height="25" Margin="278,262,0,0" VerticalAlignment="Top" Width="54" Grid.Column="1"/>
+        <TextBox x:Name="Tb_SLAssignedBit" HorizontalAlignment="Left" Height="23" Margin="330,264,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="45" Grid.Column="1" Grid.ColumnSpan="2"/>
+        <Label x:Name="Lb_SLAssignedWord" Content="Word :" HorizontalAlignment="Left" Height="24" Margin="278,292,0,0" VerticalAlignment="Top" Width="50" Grid.Column="1"/>
+        <Button x:Name="Btn_StackLight" Content="ON" HorizontalAlignment="Left" Height="27" Margin="72,232,0,0" VerticalAlignment="Top" Width="78" Grid.Column="2" Click="Btn_StackLight_Click"/>
+        <Label x:Name="Lb_SLColor" Content="Color :" HorizontalAlignment="Left" Height="25" Margin="278,353,0,0" VerticalAlignment="Top" Width="47" Grid.Column="1"/>
+        <Label x:Name="Lb_SLRepetition" Grid.Column="2" Content="Repetition :" HorizontalAlignment="Left" Height="28" Margin="50,276,0,0" VerticalAlignment="Top" Width="69"/>
+        <TextBox x:Name="Tb_SLRepetion" Grid.Column="2" HorizontalAlignment="Left" Height="28" Margin="128,276,0,0" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="42"/>
+    </Grid>
+</Window>

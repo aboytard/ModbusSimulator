@@ -1,0 +1,5 @@
+C:\Users\a00542157\source\prototypes\ModbusExampleMaster\AmpModbusMasterUi\obj\Debug\net6.0-windows\AmpModbusMasterUi.csproj.AssemblyReference.cache
+C:\Users\a00542157\source\prototypes\ModbusExampleMaster\AmpModbusMasterUi\obj\Debug\net6.0-windows\MainWindow.g.cs
+C:\Users\a00542157\source\prototypes\ModbusExampleMaster\AmpModbusMasterUi\obj\Debug\net6.0-windows\App.g.cs
+C:\Users\a00542157\source\prototypes\ModbusExampleMaster\AmpModbusMasterUi\obj\Debug\net6.0-windows\AmpModbusMasterUi_MarkupCompile.cache
+C:\Users\a00542157\source\prototypes\ModbusExampleMaster\AmpModbusMasterUi\obj\Debug\net6.0-windows\AmpModbusMasterUi_MarkupCompile.lref
