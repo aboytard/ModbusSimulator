@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ModbusSlaveUi
+namespace SharedLibrary
 {
     public class SlaveStorage : ISlaveDataStore
     {
@@ -79,7 +79,7 @@ namespace ModbusSlaveUi
                 if (_values.TryGetValue(registerIndex, out value))
                     return value;
 
-                return default(TPoint);
+                return default;
             }
             set { _values[registerIndex] = value; }
         }

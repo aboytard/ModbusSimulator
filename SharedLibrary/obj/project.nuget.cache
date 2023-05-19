@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "dgSpecHash": "ZvsjsZHWbWPN9Q6rqSlNFUlQiVItXM5rLDIAXoSqIryihgazrHyQZaJC1pfnnKEBGFF692HmvnTlYPHzaEcS2g==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\a00542157\\source\\repos\\ModbusSimulator\\SharedLibrary\\SharedLibrary.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\a00542157\\.nuget\\packages\\nmodbus\\3.0.78\\nmodbus.3.0.78.nupkg.sha512"
+  ],
+  "logs": [
+    {
+      "code": "NU1803",
+      "level": "Warning",
+      "warningLevel": 1,
+      "message": "You are running the 'restore' operation with an 'HTTP' source, 'http://10.49.93.42:8080/repository/nuget-hosted/index.json'. Non-HTTPS access will be removed in a future version. Consider migrating to an 'HTTPS' source."
+    }
+  ]
+}

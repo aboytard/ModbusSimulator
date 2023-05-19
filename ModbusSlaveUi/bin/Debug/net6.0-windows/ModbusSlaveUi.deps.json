@@ -8,7 +8,8 @@
     ".NETCoreApp,Version=v6.0": {
       "ModbusSlaveUi/1.0.0": {
         "dependencies": {
-          "NModbus": "3.0.78"
+          "NModbus": "3.0.78",
+          "SharedLibrary": "1.0.0"
         },
         "runtime": {
           "ModbusSlaveUi.dll": {}
@@ -20,6 +21,14 @@
             "assemblyVersion": "3.0.78.0",
             "fileVersion": "3.0.78.0"
           }
+        }
+      },
+      "SharedLibrary/1.0.0": {
+        "dependencies": {
+          "NModbus": "3.0.78"
+        },
+        "runtime": {
+          "SharedLibrary.dll": {}
         }
       }
     }
@@ -36,6 +45,11 @@
       "sha512": "sha512-PaD04BCM6hQO7mmTblHuUUKCnji8abw5/LME3g/OP9FVCwkwEE+tRqMRgF4G8+gAZXVL+E4kgUrOZCwvdZUvbQ==",
       "path": "nmodbus/3.0.78",
       "hashPath": "nmodbus.3.0.78.nupkg.sha512"
+    },
+    "SharedLibrary/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     }
   }
 }

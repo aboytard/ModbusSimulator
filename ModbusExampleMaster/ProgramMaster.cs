@@ -55,7 +55,7 @@ public class ModbusMaster
             var factory = new ModbusFactory();
             IModbusMaster master = factory.CreateMaster(client);
 
-            byte slaveId = 0;
+            byte slaveId = 1;
             ushort startAddress = 7165;
             ushort numInputs = 5;
             // EXAMPLE NMODBUS
@@ -68,7 +68,7 @@ public class ModbusMaster
             //master.WriteMultipleRegisters(slaveId, startAddress, registersInput);
 
             //EXAMPLE  Read Discrete Inputs
-            ushort[] registersInput = new ushort[] { 0x02, 0, 0, 0, 0}; // function code / starting address / starting address / Quantity of Inputs / Quantity of Inputs
+            ushort[] registersInput = new ushort[] { 0, 0, 0, 0, 0x01 }; // function code / starting address / starting address / Quantity of Inputs / Quantity of Inputs
 
 
             // test

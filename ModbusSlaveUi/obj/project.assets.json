@@ -14,6 +14,19 @@
             "related": ".xml"
           }
         }
+      },
+      "SharedLibrary/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "NModbus": "3.0.78"
+        },
+        "compile": {
+          "bin/placeholder/SharedLibrary.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SharedLibrary.dll": {}
+        }
       }
     }
   },
@@ -37,11 +50,17 @@
         "nmodbus.3.0.78.nupkg.sha512",
         "nmodbus.nuspec"
       ]
+    },
+    "SharedLibrary/1.0.0": {
+      "type": "project",
+      "path": "../SharedLibrary/SharedLibrary.csproj",
+      "msbuildProject": "../SharedLibrary/SharedLibrary.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0-windows7.0": [
-      "NModbus >= 3.0.78"
+      "NModbus >= 3.0.78",
+      "SharedLibrary >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -77,7 +96,11 @@
       "frameworks": {
         "net6.0-windows7.0": {
           "targetAlias": "net6.0-windows",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\a00542157\\source\\repos\\ModbusSimulator\\SharedLibrary\\SharedLibrary.csproj": {
+              "projectPath": "C:\\Users\\a00542157\\source\\repos\\ModbusSimulator\\SharedLibrary\\SharedLibrary.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
