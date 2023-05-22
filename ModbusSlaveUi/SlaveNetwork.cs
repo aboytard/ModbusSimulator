@@ -1,5 +1,6 @@
 ﻿using NModbus;
 using SharedLibrary;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
@@ -38,7 +39,6 @@ namespace ModbusSlaveUi
             {
                 IsSlaveTcpListenerOpen = !IsSlaveTcpListenerOpen;
                 OnStart();
-                CreateMySlaveNetwork(SlaveTcpListener);
             }
         }
 
@@ -47,14 +47,10 @@ namespace ModbusSlaveUi
         {
             try
             {
-                if (IsSlaveTcpListenerOpen)
-                {
-                    SlaveTcpListener.Start();
-                    CreateMySlaveNetwork(SlaveTcpListener);
-                    //Network.ListenAsync().GetAwaiter().GetResult();
-                    Network.ListenAsync(NetworkToken.Token).GetAwaiter().GetResult();
-                }
-
+                SlaveTcpListener.Start();
+                CreateMySlaveNetwork(SlaveTcpListener);
+                //Network.ListenAsync().GetAwaiter().GetResult();
+                Network.ListenAsync(NetworkToken.Token).GetAwaiter().GetResult();
             }
             catch
             {

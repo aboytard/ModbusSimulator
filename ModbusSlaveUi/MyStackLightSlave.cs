@@ -23,9 +23,13 @@ namespace StackLightSimulator
         private int _sLRepetition { get; set; } = 1;
         private StackLightColor _sLColor { get; set; } = StackLightColor.None;
 
-        public MyStackLightSlave(StackLightWindow stackLightWindow, IModbusFactory factory, IModbusSlaveNetwork slaveNetwork, string name, byte unitId) : base(factory,slaveNetwork, name, unitId)
+        // will be changed and added to the main class
+        private CancellationTokenSource _cancellationTokenSource;
+
+        public MyStackLightSlave(StackLightWindow stackLightWindow, IModbusFactory factory, IModbusSlaveNetwork slaveNetwork, string name, byte unitId, CancellationTokenSource cancellationTokenSource) : base(factory,slaveNetwork, name, unitId)
         {
             StackLightWindow = stackLightWindow;
+            _cancellationTokenSource = cancellationTokenSource;
         }
 
         // need to check something based on the sender
@@ -46,7 +50,6 @@ namespace StackLightSimulator
                 var _mySlThread = new Thread(new ThreadStart(this.ListenToStackLightCall));
                 _mySlThread.Start();
             }
-
         }
 
         public void ListenToStackLightCall()
@@ -54,7 +57,8 @@ namespace StackLightSimulator
             var numberOfBlicking = 0;
             SetupStackLight();
             // HERE I BLOCK THE THREAD
-            while (_myLightState && numberOfBlicking < _sLRepetition)
+            // I am blocking the thread of 
+            while (_myLightState && numberOfBlicking < _sLRepetition && !_cancellationTokenSource.Token.IsCancellationRequested)
             {
                 // CAREFUL I AM GONNA MAKE THE MAIN THREAD SLEEP
                 ChangeStackLightColor(_sLColor);

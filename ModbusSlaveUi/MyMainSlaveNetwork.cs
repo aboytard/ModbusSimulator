@@ -3,6 +3,8 @@ using StackLightSimulator;
 using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Threading;
+using System.Windows;
 
 namespace ModbusSlaveUi
 {
@@ -17,8 +19,24 @@ namespace ModbusSlaveUi
 
         public override void OnStart()
         {
-            WriteLog("Listener server start");
-            base.OnStart();
+            try
+            {
+                if (IsSlaveTcpListenerOpen)
+                {
+                    base.CreateMySlaveNetwork(SlaveTcpListener);
+                    WriteLog("Listener server start");
+                    SlaveTcpListener.Start();
+                    CreateMySlaveNetwork(SlaveTcpListener);
+                    Network.ListenAsync(NetworkToken.Token).GetAwaiter().GetResult();
+                }
+            }
+            catch
+            {
+                UiWindow.Dispatcher.Invoke(delegate
+                {
+                    UiWindow.Tbl_Infos.Text += "\n" + "Network thread stopped listening." + "\n" + "TcpListener stopped listening.";
+                });
+            }
         }
 
         public override void CreateMySlaveNetwork(TcpListener slaveTcpListener)
@@ -42,9 +60,10 @@ namespace ModbusSlaveUi
             WriteLog($"New slave added: {name} {byteId}");
         }
 
-        public void AddNewStacklightSlave(StackLightWindow stackLightWindow,byte byteId, string name)
+        public void AddNewStacklightSlave(StackLightWindow stackLightWindow,byte byteId, string name, CancellationTokenSource cancellationTokenSource)
         {
-            var slaveToAdd = new MyStackLightSlave(stackLightWindow, _networkFactory, Network, name, byteId);
+            // ADD CANCELLATION TOKEN?
+            var slaveToAdd = new MyStackLightSlave(stackLightWindow, _networkFactory, Network, name, byteId, cancellationTokenSource);
             AddSlaveToNetwork(slaveToAdd);
             WriteLog($"New slave added: {name} {byteId}");
         }
