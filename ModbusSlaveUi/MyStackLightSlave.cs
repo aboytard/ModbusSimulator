@@ -13,11 +13,11 @@ namespace StackLightSimulator
     public class MyStackLightSlave : Slave
     {
         public StackLightWindow StackLightWindow { get; set; }
-        private StackLight _stackLight { get; set; }
+        private StackLightSlave _stackLight { get; set; }
         // will be changed and added to the main class
         private CancellationTokenSource _cancellationTokenSource;
 
-        public MyStackLightSlave(StackLightWindow stackLightWindow, IModbusFactory factory, IModbusSlaveNetwork slaveNetwork, StackLight stackLight, CancellationTokenSource cancellationTokenSource) : base(factory,slaveNetwork, stackLight.Name, stackLight.ByteId)
+        public MyStackLightSlave(StackLightWindow stackLightWindow, IModbusFactory factory, IModbusSlaveNetwork slaveNetwork, StackLightSlave stackLight, CancellationTokenSource cancellationTokenSource) : base(factory,slaveNetwork, stackLight.Name, stackLight.ByteId)
         {
             // ADD STACKLIGHT OBJECT THERE!!! 
             _stackLight = stackLight;

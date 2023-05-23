@@ -1,6 +1,7 @@
 ﻿using SharedLibrary;
 using StackLightSimulator;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -11,6 +12,7 @@ namespace ModbusSlaveUi
     public class MyMainSlaveNetwork : SlaveNetwork
     {
         public MainWindow UiWindow { get; set; }
+        public List<string> SelectedIODeviceToSend = new();
 
         public MyMainSlaveNetwork(MainWindow uiWindow, IPAddress ip, int port) : base(ip, port)
         {
@@ -42,7 +44,7 @@ namespace ModbusSlaveUi
         public override void CreateMySlaveNetwork(TcpListener slaveTcpListener)
         {
             base.CreateMySlaveNetwork(slaveTcpListener);
-            AddNewSlave(0, "ModbusSlave");
+            AddNewModbusSlave(0, "ModbusSlave");
         }
 
         public override void AddSlaveToNetwork(Slave slave)
@@ -51,14 +53,14 @@ namespace ModbusSlaveUi
         }
 
 
-        public override void AddNewSlave(byte byteId, string name)
+        public void AddNewModbusSlave(ModbusSlaveWindow modbusSlaveWindow, ModbusSlave modbusSlave, CancellationTokenSource cancellationTokenSource)
         {
-            var slaveToAdd = new MyModbusSlave(UiWindow, _networkFactory, Network, name, byteId);
+            var slaveToAdd = new MyModbusSlave(modbusSlaveWindow, _networkFactory, Network , modbusSlave, cancellationTokenSource);
             AddSlaveToNetwork(slaveToAdd);
-            WriteLog($"New slave added: {name} {byteId}");
+            WriteLog($"New slave added: {modbusSlave.Name} {modbusSlave.StartAdress}");
         }
 
-        public void AddNewStacklightSlave(StackLightWindow stackLightWindow, StackLight stackLight, CancellationTokenSource cancellationTokenSource)
+        public void AddNewStacklightSlave(StackLightWindow stackLightWindow, StackLightSlave stackLight, CancellationTokenSource cancellationTokenSource)
         {
             // ADD CANCELLATION TOKEN?
             var slaveToAdd = new MyStackLightSlave(stackLightWindow, _networkFactory, Network, stackLight, cancellationTokenSource);

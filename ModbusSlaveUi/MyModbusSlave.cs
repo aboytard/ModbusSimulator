@@ -1,15 +1,16 @@
 ﻿using NModbus;
 using SharedLibrary;
 using System.Linq;
+using System.Threading;
 
 namespace ModbusSlaveUi
 {
     public class MyModbusSlave : Slave
     {
-        public MainWindow ModbusSlaveWindow { get; set; }
+        public ModbusSlaveWindow ModbusSlaveWindow { get; set; }
         private string pointWord { get; set; }
 
-        public MyModbusSlave(MainWindow window, IModbusFactory networkFactory, IModbusSlaveNetwork slaveNetwork, string name, byte unitId) : base(networkFactory, slaveNetwork, name, unitId)
+        public MyModbusSlave(ModbusSlaveWindow window, IModbusFactory networkFactory, IModbusSlaveNetwork slaveNetwork, ModbusSlave modbusSlave,CancellationTokenSource cancellationTokenSource) : base(networkFactory, slaveNetwork, modbusSlave.Name, (byte)modbusSlave.StartAdress)
         {
             ModbusSlaveWindow = window;
         }
@@ -23,7 +24,7 @@ namespace ModbusSlaveUi
 
         public override void StorageOperationOccuredForHoldingRegisterAction(object sender, StorageEventArgs<ushort> args)
         {
-            //HERE STILL NEED TO HAVE THE NUMBER OF WORD CHECKED
+            // HERE I AM NOT USING ANY THREAD?? OR THE CANCELLATION TOKEN??
             if (args.Points.Length == ModbusSlaveWindow.SelectedNumberOfInputBit)
             {
                 var newPointWord = string.Join(" ", args.Points.Select(point => ((int)point).ToString()));

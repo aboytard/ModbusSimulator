@@ -16,9 +16,6 @@ namespace ModbusSlaveUi
     {
         private MyMainSlaveNetwork MyMainSlaveNetwork;
 
-        public ObservableCollection<string> MyInputBits { get; set; }
-        public ObservableCollection<string> MyOutputBits { get; set; }
-
         // key : name of the slave, value : byteId
         public Dictionary<string, byte> _slaveMapping = new();
         public ObservableCollection<string> _slaves { get; set; } = new();
@@ -30,7 +27,7 @@ namespace ModbusSlaveUi
         public Thread MyListenerThread { get; set; }
 
         #region StackLight
-        public StackLight currentStackLight { get; set; }
+        public StackLightSlave currentStackLight { get; set; }
         public ObservableCollection<string> SlColor { get; set; }
         public ObservableCollection<string> SlInputBit { get; set; }
         public ObservableCollection<string> SlNbWord { get; set; }
@@ -40,22 +37,13 @@ namespace ModbusSlaveUi
         #endregion
 
         #region Output
-        private ushort[] _outputWords { get; set; } = new ushort[] { };
-        private List<string> _selectedOutputBit = new();
+        public ModbusSlave currentModbusSlave { get; set; }
         private ushort _startAdress;
-        private List<string> SelectedIODeviceToSend = new();
         #endregion
 
         public MainWindow()
         {
             InitializeComponent();
-
-            MyInputBits = new ObservableCollection<string> { "0", "1", "2", "3", "4","5"};
-            myListBoxInputBits.ItemsSource = MyInputBits;
-
-            MyOutputBits = new ObservableCollection<string> { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9",
-                "10", "11", "12", "13", "14", "15" };
-            myListBoxOutputBits.ItemsSource = MyOutputBits;
 
             myListSlaves.ItemsSource = _slaves;
 
@@ -67,16 +55,6 @@ namespace ModbusSlaveUi
 
             SlNbWord = new ObservableCollection<string> { "0", "1", "2", "3", "4", "5" };
             LB_NbWord.ItemsSource = SlNbWord;
-        }
-
-        private void Btn_SendMessage_Click(object sender, RoutedEventArgs e)
-        {
-            foreach(var slave in SelectedIODeviceToSend)
-            {
-                MyMainSlaveNetwork.mySlaveMapping[slave].WriteInHoldingRegisterFromSlave(_startAdress, _outputWords);
-            }
-            _outputWords = new ushort[] { };
-            ClearOutputWord();
         }
 
         private void Btn_Start_Click(object sender, RoutedEventArgs e)
@@ -114,58 +92,19 @@ namespace ModbusSlaveUi
             _slaveMapping.Clear();
         }
 
-        private void myListBoxInputBits_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count > 0)
-                SelectedNumberOfInputBit = Int32.Parse(e.AddedItems[0].ToString());
-        }
-
         private void myListSlaves_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0)
-                SelectedIODeviceToSend.Add(e.AddedItems[0].ToString());
+                MyMainSlaveNetwork.SelectedIODeviceToSend.Add(e.AddedItems[0].ToString());
             if (e.RemovedItems.Count > 0)
-                SelectedIODeviceToSend.Remove(e.RemovedItems[0].ToString());
-        }
-
-        private void myListBoxOutputBits_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            if (e.AddedItems.Count > 0)
-                OutputBitSelectionChanged(e.AddedItems[0].ToString());
-            if (e.RemovedItems.Count > 0)
-                OutputBitSelectionChanged(e.RemovedItems[0].ToString());
-        }
-
-        #region Ui-Helper
-        public void AddOutputWordToTbl(string word)
-        {
-            Dispatcher.Invoke(delegate
-            {
-                Tbl_OutputBits.Text += " " + word;
-            });
-        }
-
-        public void ClearOutputWord()
-        {
-            Dispatcher.Invoke(delegate
-            {
-                Tbl_OutputBits.Text = "";
-            });
-        }
-
-        public void OutputBitSelectionChanged(string outputBit)
-        {
-            if (_selectedOutputBit.Contains(outputBit))
-                _selectedOutputBit.Remove(outputBit);
-            else
-                _selectedOutputBit.Add(outputBit);
+                MyMainSlaveNetwork.SelectedIODeviceToSend.Remove(e.RemovedItems[0].ToString());
         }
 
         public void SetupStackLight()
         {
             Dispatcher.Invoke(delegate
             {
-                currentStackLight = new StackLight()
+                currentStackLight = new StackLightSlave()
                 {
                     Ip = Tb_Ip.Text,
                     Port = Int32.Parse(Tb_Port.Text.ToString()),
@@ -181,12 +120,6 @@ namespace ModbusSlaveUi
             });
         }
 
-        private void Btn_ClearMessage_Click(object sender, RoutedEventArgs e)
-        {
-            _outputWords = new ushort[] { };
-            ClearOutputWord();
-        }
-
         private void Btn_ClearLogs_Click(object sender, RoutedEventArgs e)
         {
             Dispatcher.Invoke(delegate
@@ -194,37 +127,6 @@ namespace ModbusSlaveUi
                 Tbl_Infos.Text = "";
             });
         }
-
-        #endregion
-
-        private void Btn_AddOutputBit_Click(object sender, RoutedEventArgs e)
-        {
-            string myUshortString = string.Empty;
-            int myUshortInt = 0;
-            for (int i = 0; i < myListBoxOutputBits.Items.Count; i++)
-            {
-                if (_selectedOutputBit.Contains(this.myListBoxOutputBits.Items[i].ToString()))
-                {
-                    myUshortString = "1" + myUshortString;
-                    myUshortInt += (int)Math.Pow(2, i);
-                }
-                else
-                    myUshortString = "0" + myUshortString;
-            }
-            AddOutputWordToTbl(myUshortInt.ToString());
-            var arrayResized = _outputWords;
-            Array.Resize(ref arrayResized, arrayResized.Length + 1);
-            arrayResized[arrayResized.Length - 1] = (ushort)myUshortInt;
-            _outputWords = arrayResized;
-            _startAdress = (ushort)(Int32.Parse(Tb_StartAdress.Text));
-
-            // unselect the output bits
-            myListBoxOutputBits.UnselectAll();
-            _selectedOutputBit.Clear();
-        }
-
-
-
 
         private void Btn_CreateSl_Click(object sender, RoutedEventArgs e)
         {
@@ -246,5 +148,35 @@ namespace ModbusSlaveUi
             });
         }
 
+        private void Btn_Create_MD_Click(object sender, RoutedEventArgs e)
+        {
+            var cancellationSourceToken = new CancellationTokenSource();
+            Dispatcher.Invoke(delegate
+            {
+                SetupModbusDevice();
+                var modbusSlaveWindow = new ModbusSlaveWindow(this, MyMainSlaveNetwork, currentModbusSlave);
+                modbusSlaveWindow.Show();
+                var slaveByteId = (byte)(Int32.Parse(Tb_StartAdress_Md.Text));
+                MyMainSlaveNetwork.AddNewModbusSlave(modbusSlaveWindow, currentModbusSlave, cancellationSourceToken);
+
+                // mapping
+                _slaveMapping.TryAdd(Tb_Name_Sl.Text, slaveByteId);
+                _slaves.Add(Tb_Name_Sl.Text);
+                _runningWindows.TryAdd(Tb_Name_Sl.Text, modbusSlaveWindow);
+                _runningSlaveCancellationToken.TryAdd(Tb_Name_Sl.Text, cancellationSourceToken);
+            });
+        }
+
+        public void SetupModbusDevice()
+        {
+            Dispatcher.Invoke(delegate
+            {
+                currentModbusSlave = new ModbusSlave()
+                {
+                    Name = Tb_Name_Md.Text,
+                    StartAdress = (ushort)Int32.Parse(Tb_StartAdress_Md.Text),
+                };
+            });
+        }
     }
 }

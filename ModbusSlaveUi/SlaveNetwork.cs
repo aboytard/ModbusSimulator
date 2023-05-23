@@ -77,7 +77,7 @@ namespace ModbusSlaveUi
         }
 
         // HERE I SHOULD ADD TWO DELEGATE THAT CAN THEN BE CHANGED DEPENDING
-        public virtual void AddNewSlave(byte byteId, string name)
+        public virtual void AddNewModbusSlave(byte byteId, string name)
         {
             var slaveToAdd = new Slave(_networkFactory, Network, name, byteId);
             AddSlaveToNetwork(slaveToAdd);

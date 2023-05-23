@@ -1,6 +1,6 @@
 ﻿namespace SharedLibrary
 {
-    public class StackLight
+    public class StackLightSlave
     {
         public string Ip { get; set; }
 

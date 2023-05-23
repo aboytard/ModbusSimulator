@@ -10,12 +10,12 @@ namespace ModbusSlaveUi
     /// </summary>
     public partial class StackLightWindow : Window
     {
-        public MainWindow ModbusWindow { get; set; }
+        public MainWindow MainWindow { get; set; }
         public MyMainSlaveNetwork MainSlaveNetwork { get; set; }
-        public StackLight StackLight { get; set; }
-        public StackLightWindow(MainWindow modbusWindow, MyMainSlaveNetwork mainSlaveNetwork, StackLight stackLight)
+        public StackLightSlave StackLight { get; set; }
+        public StackLightWindow(MainWindow mainWindow, MyMainSlaveNetwork mainSlaveNetwork, StackLightSlave stackLight)
         {
-            ModbusWindow = modbusWindow;
+            MainWindow = mainWindow;
             MainSlaveNetwork = mainSlaveNetwork;
             InitializeComponent();
             StackLight = stackLight;
