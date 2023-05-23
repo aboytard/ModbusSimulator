@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SharedLibrary;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net;
@@ -13,7 +14,7 @@ namespace ModbusSlaveUi
     /// </summary>
     public partial class MainWindow : Window
     {
-        private MyMainSlaveNetwork _myTcpListener;
+        private MyMainSlaveNetwork MyMainSlaveNetwork;
 
         public ObservableCollection<string> MyInputBits { get; set; }
         public ObservableCollection<string> MyOutputBits { get; set; }
@@ -22,10 +23,18 @@ namespace ModbusSlaveUi
         public Dictionary<string, byte> _slaveMapping = new();
         public ObservableCollection<string> _slaves { get; set; } = new();
 
-        // key: name of the slave / Title of the window, value : cancellationTokenSource
-        public Dictionary<string, CancellationTokenSource> _runningWindow = new();
+        // key: name of the slave / Title of the window, value : cancellation token in of the slave
+        public Dictionary<string, CancellationTokenSource> _runningSlaveCancellationToken = new();
+        public Dictionary<string, Window> _runningWindows = new();
 
         public Thread MyListenerThread { get; set; }
+
+        #region StackLight
+        public StackLight currentStackLight { get; set; }
+        public ObservableCollection<string> SlColor { get; set; }
+        public ObservableCollection<string> SlInputBit { get; set; }
+        public ObservableCollection<string> SlNbWord { get; set; }
+        #endregion
         #region Input
         public int SelectedNumberOfInputBit { get; set; }
         #endregion
@@ -49,13 +58,22 @@ namespace ModbusSlaveUi
             myListBoxOutputBits.ItemsSource = MyOutputBits;
 
             myListSlaves.ItemsSource = _slaves;
+
+            SlColor = new ObservableCollection<string> { "Red", "Yellow", "Green" };
+            LB_SlColor.ItemsSource = SlColor;
+
+            SlInputBit = new ObservableCollection<string> { "0", "1", "2", "3", "4", "5", "6", "7", "8", };
+            LB_InputBit_Sl.ItemsSource = SlInputBit;
+
+            SlNbWord = new ObservableCollection<string> { "0", "1", "2", "3", "4", "5" };
+            LB_NbWord.ItemsSource = SlNbWord;
         }
 
         private void Btn_SendMessage_Click(object sender, RoutedEventArgs e)
         {
             foreach(var slave in SelectedIODeviceToSend)
             {
-                _myTcpListener.mySlaveMapping[slave].WriteInHoldingRegisterFromSlave(_startAdress, _outputWords);
+                MyMainSlaveNetwork.mySlaveMapping[slave].WriteInHoldingRegisterFromSlave(_startAdress, _outputWords);
             }
             _outputWords = new ushort[] { };
             ClearOutputWord();
@@ -67,8 +85,8 @@ namespace ModbusSlaveUi
             {
                 _slaves.Add("ModbusSlave");
                 _slaveMapping.TryAdd("ModbusSlave", (byte)Int32.Parse("0"));
-                _myTcpListener = new MyMainSlaveNetwork(this, IPAddress.Parse(Tb_Ip.Text), Int32.Parse(Tb_Port.Text));
-                MyListenerThread = new Thread(new ThreadStart(_myTcpListener.OnTcpConnectionChangeState));
+                MyMainSlaveNetwork = new MyMainSlaveNetwork(this, IPAddress.Parse(Tb_Ip.Text), Int32.Parse(Tb_Port.Text));
+                MyListenerThread = new Thread(new ThreadStart(MyMainSlaveNetwork.OnTcpConnectionChangeState));
                 MyListenerThread.Start();
             }
             catch (Exception exeption)
@@ -80,7 +98,20 @@ namespace ModbusSlaveUi
         private void Btn_Stop_Click(object sender, RoutedEventArgs e)
         {
             MyListenerThread.Join(TimeSpan.FromSeconds(1));
-            _myTcpListener.OnStop();
+            MyMainSlaveNetwork.OnStop();
+            foreach(var pair in _runningSlaveCancellationToken)
+            {
+                pair.Value.Cancel();
+            }
+            foreach(var pair in _runningWindows)
+            {
+                pair.Value.Close();
+            }
+            // Can create a Dispose method
+            _runningWindows.Clear();
+            _runningSlaveCancellationToken.Clear();
+            MyMainSlaveNetwork.mySlaveMapping.Clear();
+            _slaveMapping.Clear();
         }
 
         private void myListBoxInputBits_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -105,29 +136,7 @@ namespace ModbusSlaveUi
                 OutputBitSelectionChanged(e.RemovedItems[0].ToString());
         }
 
-
-
-        private void Btn_TestOpen_Click(object sender, RoutedEventArgs e)
-        {
-            AddNewDevice();
-        }
-
         #region Ui-Helper
-
-        public void AddNewDevice()
-        {
-            var cancellationSourceToken = new CancellationTokenSource();
-            Dispatcher.Invoke(delegate 
-            {
-                var stackLightWindow = new StackLightWindow(this, _myTcpListener,Tb_Name.Text, (byte)Int32.Parse(Tb_ByteId.Text), cancellationSourceToken);
-                stackLightWindow.Show();
-                _slaveMapping.TryAdd(Tb_Name.Text, (byte)(Int32.Parse(Tb_ByteId.Text)));
-                _slaves.Add(Tb_Name.Text);
-
-                // Add the cancellationToken in the mapping
-                _runningWindow.TryAdd(Tb_Name.Text, cancellationSourceToken);
-            });
-        }
         public void AddOutputWordToTbl(string word)
         {
             Dispatcher.Invoke(delegate
@@ -151,6 +160,41 @@ namespace ModbusSlaveUi
             else
                 _selectedOutputBit.Add(outputBit);
         }
+
+        public void SetupStackLight()
+        {
+            Dispatcher.Invoke(delegate
+            {
+                currentStackLight = new StackLight()
+                {
+                    Ip = Tb_Ip.Text,
+                    Port = Int32.Parse(Tb_Port.Text.ToString()),
+                    Name = Tb_Name_Sl.Text,
+                    ByteId = (byte)Int32.Parse(Tb_ByteId_Sl.Text),
+                    Active = Int32.Parse(Tb_SeqActive.Text),
+                    Inactive = Int32.Parse(Tb_SeqInactive.Text),
+                    Repetition = Int32.Parse(Tb_Repetition.Text),
+                    NbWord = Int32.Parse(LB_NbWord.SelectedItem.ToString()),
+                    InputBit = Int32.Parse(LB_InputBit_Sl.SelectedItem.ToString()),
+                    Color = Enum.Parse<StackLightColor>(LB_SlColor.SelectedItem.ToString())
+                };
+            });
+        }
+
+        private void Btn_ClearMessage_Click(object sender, RoutedEventArgs e)
+        {
+            _outputWords = new ushort[] { };
+            ClearOutputWord();
+        }
+
+        private void Btn_ClearLogs_Click(object sender, RoutedEventArgs e)
+        {
+            Dispatcher.Invoke(delegate
+            {
+                Tbl_Infos.Text = "";
+            });
+        }
+
         #endregion
 
         private void Btn_AddOutputBit_Click(object sender, RoutedEventArgs e)
@@ -179,17 +223,28 @@ namespace ModbusSlaveUi
             _selectedOutputBit.Clear();
         }
 
-        private void Btn_ClearMessage_Click(object sender, RoutedEventArgs e)
-        {
-            _outputWords = new ushort[] { };
-            ClearOutputWord();        }
 
-        private void Btn_ClearLogs_Click(object sender, RoutedEventArgs e)
+
+
+        private void Btn_CreateSl_Click(object sender, RoutedEventArgs e)
         {
+            // HERE I WILL CREATE THE MAPPING BASED ON THE CANCELLATIONTOKEN
+            var cancellationSourceToken = new CancellationTokenSource();
             Dispatcher.Invoke(delegate
             {
-                Tbl_Infos.Text = "";
+                SetupStackLight();
+                var stackLightWindow = new StackLightWindow(this, MyMainSlaveNetwork, currentStackLight);
+                stackLightWindow.Show();
+                var slaveByteId = (byte)(Int32.Parse(Tb_ByteId_Sl.Text));
+                MyMainSlaveNetwork.AddNewStacklightSlave(stackLightWindow, stackLightWindow.StackLight, cancellationSourceToken);
+
+                // mapping
+                _slaveMapping.TryAdd(Tb_Name_Sl.Text, slaveByteId);
+                _slaves.Add(Tb_Name_Sl.Text);
+                _runningWindows.TryAdd(Tb_Name_Sl.Text, stackLightWindow);
+                _runningSlaveCancellationToken.TryAdd(Tb_Name_Sl.Text, cancellationSourceToken);
             });
         }
+
     }
 }

@@ -13,21 +13,14 @@ namespace StackLightSimulator
     public class MyStackLightSlave : Slave
     {
         public StackLightWindow StackLightWindow { get; set; }
-
-        // need to have it change in the futur
-        private bool _myLightState { get; set; } = true;
-        private int _sLActive { get; set; } = 400;
-        private int _sLInactive { get; set; } = 600;
-        private int _sLWord { get; set; } = 1;
-        private int _sLBit { get; set; } = 0;
-        private int _sLRepetition { get; set; } = 1;
-        private StackLightColor _sLColor { get; set; } = StackLightColor.None;
-
+        private StackLight _stackLight { get; set; }
         // will be changed and added to the main class
         private CancellationTokenSource _cancellationTokenSource;
 
-        public MyStackLightSlave(StackLightWindow stackLightWindow, IModbusFactory factory, IModbusSlaveNetwork slaveNetwork, string name, byte unitId, CancellationTokenSource cancellationTokenSource) : base(factory,slaveNetwork, name, unitId)
+        public MyStackLightSlave(StackLightWindow stackLightWindow, IModbusFactory factory, IModbusSlaveNetwork slaveNetwork, StackLight stackLight, CancellationTokenSource cancellationTokenSource) : base(factory,slaveNetwork, stackLight.Name, stackLight.ByteId)
         {
+            // ADD STACKLIGHT OBJECT THERE!!! 
+            _stackLight = stackLight;
             StackLightWindow = stackLightWindow;
             _cancellationTokenSource = cancellationTokenSource;
         }
@@ -40,7 +33,7 @@ namespace StackLightSimulator
 
         public override void StorageOperationOccuredForHoldingRegisterAction(object sender, StorageEventArgs<ushort> args)
         {
-            if (args.Points.Length == 3)
+            if (args.Points.Length == _stackLight.NbWord)
             {
                 string sLWord = string.Join(" ", args.Points.Select(point => ((int)point).ToString()));
                 WriteLog($"STACKLIGHT HEARD : Holding registers: {args.Operation} starting at {args.StartingAddress} with value : {sLWord}.");
@@ -55,45 +48,23 @@ namespace StackLightSimulator
         public void ListenToStackLightCall()
         {
             var numberOfBlicking = 0;
-            SetupStackLight();
             // HERE I BLOCK THE THREAD
             // I am blocking the thread of 
-            while (_myLightState && numberOfBlicking < _sLRepetition && !_cancellationTokenSource.Token.IsCancellationRequested)
+            while (numberOfBlicking < _stackLight.Repetition && !_cancellationTokenSource.Token.IsCancellationRequested)
             {
                 // CAREFUL I AM GONNA MAKE THE MAIN THREAD SLEEP
-                ChangeStackLightColor(_sLColor);
-                Thread.Sleep(_sLActive);
+                ChangeStackLightColor(_stackLight.Color);
+                Thread.Sleep(_stackLight.Active);
                 ChangeStackLightColor(StackLightColor.None);
-                Thread.Sleep(_sLInactive);
+                Thread.Sleep(_stackLight.Inactive);
                 numberOfBlicking += 1;
             }
         }
 
         #region StackLightWindow
-        public void SetupStackLight()
-        {
-            StackLightWindow.Dispatcher.Invoke(delegate
-            {
-                _sLActive = Int32.Parse(StackLightWindow.Tb_SeqActive.Text);
-                _sLInactive = Int32.Parse(StackLightWindow.Tb_SeqInactive.Text);
 
-                _sLRepetition = Int32.Parse(StackLightWindow.Tb_Repetition.Text);
-                if (StackLightWindow.LB_NbWord.SelectedItem != null)
-                    _sLWord = Int32.Parse(StackLightWindow.LB_NbWord.SelectedItem.ToString());
-                else
-                    _sLWord = 0;
-                if (StackLightWindow.LB_InputBit.SelectedItem != null)
-                    _sLBit = Int32.Parse(StackLightWindow.LB_InputBit.SelectedItem.ToString());
-                else
-                    _sLBit = 0;
-                if (StackLightWindow.LB_SlColor.SelectedItem != null)
-                    _sLColor = Enum.Parse<StackLightColor>(StackLightWindow.LB_SlColor.SelectedItem.ToString());
-                else
-                    _sLColor = StackLightColor.Red;
-            });
-        }
 
-        public void ChangeStackLightColor(StackLightColor color)
+        public void ChangeStackLightColor(StackLightColor? color)
         {
             StackLightWindow.Dispatcher.Invoke(delegate
             {

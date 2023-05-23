@@ -9,8 +9,6 @@
     <Grid x:Name="GvMain">
         <Grid.RowDefinitions>
             <RowDefinition Height="100*"/>
-            <RowDefinition Height="100*"/>
-            <RowDefinition Height="100*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100*"/>
@@ -38,70 +36,7 @@
             <Button Name ="Btn_ClearLogs" Content="Clear" HorizontalAlignment="Center" Grid.Column="0" Grid.Row="3" VerticalAlignment="Top" Grid.RowSpan="2" Click="Btn_ClearLogs_Click"/>
         </Grid>
 
-
-        <Grid x:Name="GvSlProperties" Grid.Column="0" Grid.Row="1" Grid.RowSpan="2">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="40*"/>
-                <ColumnDefinition Width="60*"/>
-            </Grid.ColumnDefinitions>
-            <Label Name="Lb_Color" Content="Color : "  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0"/>
-            <ListBox x:Name="LB_SlColor" ItemsSource="{Binding SlColor}" SelectionMode="Single" Grid.Column="1" Grid.Row="0" Grid.ColumnSpan="1">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Label Name="Lb_NbWord" Content="Word : " HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1"/>
-            <ListBox x:Name="LB_NbWord" ItemsSource="{Binding SlNbWord}" SelectionMode="Single" Grid.Row="1" Grid.Column="1" >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Label Name="Lb_InputBit" Content="Bit :" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2"/>
-            <ListBox x:Name="LB_InputBit" ItemsSource="{Binding SlInputBit}" SelectionMode="Single" Grid.Row="2" Grid.Column="1" >
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
-            <Label Name="Lb_SeqActive" Content="Seq Active :" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3"/>
-            <TextBox Name="Tb_SeqActive" HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Text="400" VerticalAlignment="Center" Grid.Row="3" Height="20" Width="80"/>
-            <Label Name="Lb_SeqInactive" Content="Seq Inactive : " HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4"/>
-            <TextBox Name="Tb_SeqInactive" HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Text="600" VerticalAlignment="Center" Grid.Row="4" Height="20" Width="80"/>
-            <Label Name="Lb_Repetition" Content="Repetition : " HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="5"/>
-            <TextBox Name="Tb_Repetition" HorizontalAlignment="Center" Grid.Column="1" TextWrapping="Wrap" Text="20" VerticalAlignment="Center" Grid.Row="5" Height="20" Width="80"/>
-        </Grid>
-
-        <Grid x:Name="GvConnection" Grid.Column="0" Grid.Row="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="25*"/>
-            </Grid.ColumnDefinitions>
-            <Label Name="Lb_Ip" Content="Ip : "  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="4"/>
-            <Label Name="Lb_Port" Content="Port : "  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="4"/>
-            <Button Name ="Btn_Start" Content="Start" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="4" Grid.Row="0" Click="Btn_Start_Click"/>
-            <Button Name ="Btn_Stop" Content="Stop" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="4" Grid.Row="1"/>
-        </Grid>
-        <Grid Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="1" Grid.RowSpan="2">
+        <Grid Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="1" Grid.RowSpan="2">
             <TextBlock Name="Tbl_Log" Text="Log : " HorizontalAlignment="Left" TextWrapping="Wrap" VerticalAlignment="Top" FontWeight="Bold"/>
         </Grid>
     </Grid>

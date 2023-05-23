@@ -5,15 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ModbusSlaveUi"
         mc:Ignorable="d"
-        Title="MainWindow" Height="526" Width="899">
+        Title="MainWindow" Height="526" Width="900">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="25*"/>
-            <ColumnDefinition Width="25*"/>
-            <ColumnDefinition Width="25*"/>
+            <ColumnDefinition Width="199*"/>
+            <ColumnDefinition Width="125*"/>
+            <ColumnDefinition Width="126*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="15*"/>
+            <RowDefinition Height="40*"/>
             <RowDefinition Height="15*"/>
             <RowDefinition Height="25*"/>
         </Grid.RowDefinitions>
@@ -30,62 +30,123 @@
                 <RowDefinition Height="25*"/>
             </Grid.RowDefinitions>
             <Label x:Name="Lb_Ip" Content="Ip :" HorizontalAlignment="Left" Height="31"  VerticalAlignment="Center" Grid.Row="0" Grid.Column="0"/>
-            <TextBox x:Name="Tb_Ip" HorizontalAlignment="Center" TextWrapping="Wrap" Text="0.0.0.0" VerticalAlignment="Center" Grid.Column="1" Width="98"/>
-            <Button x:Name="Btn_Start" Content="Start" HorizontalAlignment="Center" Height="36" VerticalAlignment="Center" Width="94" Click="Btn_Start_Click" Grid.Row="0" Grid.Column="2"/>
+            <TextBox x:Name="Tb_Ip" HorizontalAlignment="Center" TextWrapping="Wrap" Text="0.0.0.0" VerticalAlignment="Center" Grid.Column="1" Width="75" Height="31"/>
+            <Button x:Name="Btn_Start" Content="Start" HorizontalAlignment="Center" Height="36" VerticalAlignment="Center" Width="52" Click="Btn_Start_Click" Grid.Column="2"/>
             <Label x:Name="Lb_Port" Content="Port : " HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="45" Grid.Row="1" Grid.Column="0"/>
-            <TextBox x:Name="Tb_Port" HorizontalAlignment="Center" Height="26" TextWrapping="Wrap" Text="502" VerticalAlignment="Center" Width="98" Grid.Row="1" Grid.Column="1"/>
-            <Button x:Name="Btn_Stop" Content="Stop" HorizontalAlignment="Center" Height="32"  VerticalAlignment="Center" Width="94" Click="Btn_Stop_Click" Grid.Row="1" Grid.Column="2"/>
-            <Button x:Name="Btn_ClearLogs" Content="Clear Logs" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="94" Click="Btn_ClearLogs_Click" Grid.Column="0" Grid.Row="2"/>
-        </Grid>
-        <Grid Grid.Column="2" Grid.Row="0">
-            <ListBox x:Name="myListSlaves" ItemsSource="{Binding MyOutputBits}" SelectionMode="Multiple" SelectionChanged="myListSlaves_SelectionChanged" Grid.Row="1" Grid.Column="1" Grid.RowSpan="1">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>        </Grid>
-
-        <Grid Name="Gv_Log" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="2">
-            <TextBlock x:Name="Tbl_Infos" HorizontalAlignment="Left" Height="350" TextWrapping="Wrap" VerticalAlignment="Top" Text="Infos :" Grid.ColumnSpan="2"/>
-        </Grid>
-
-        <Grid Name="Gv_DefinitionIoDevice" Grid.Row="0" Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="25*"/>
-                <ColumnDefinition Width="25*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="15*"/>
-                <RowDefinition Height="25*"/>
-                <RowDefinition Height="25*"/>
-            </Grid.RowDefinitions>
-            <Label x:Name="Lb_Name" Content="Name : " HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="61" Grid.Column="0"/>
-            <TextBox x:Name="Tb_Name" HorizontalAlignment="Center" Height="26" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="98"  Grid.Row="0" Grid.Column="1"/>
-            <Label x:Name="Lb_ByteId" Content="ByteId : " HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="45" Grid.Row="1" Grid.Column="0"/>
-            <TextBox x:Name="Tb_ByteId" HorizontalAlignment="Center" Height="26" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Width="98"  Grid.Row="1" Grid.Column="1"/>
-            <Button x:Name="Btn_Create" Grid.Row="2" Grid.ColumnSpan="2" Content="Create SL" HorizontalAlignment="Left" VerticalAlignment="Center" Click="Btn_TestOpen_Click" Width="111" Height="34" Margin="94,0,0,0"/>
-        </Grid>
-
-        <Grid Name="Gv_Ouput" Grid.Row="2" Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="50*"/>
-                <ColumnDefinition Width="15*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="15*"/>
-                <RowDefinition Height="50*"/>
-            </Grid.RowDefinitions>
-            <Label x:Name="Lb_Output" Content="Output Bits" HorizontalAlignment="Left" Height="24" VerticalAlignment="Center" Width="70" Grid.Row="0" Grid.Column="0"/>
-            <Button x:Name="Btn_AddOutputBit" Content="Add" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Btn_AddOutputBit_Click" Grid.Row="0" Grid.Column="1"/>
-            <ListBox x:Name="myListBoxOutputBits" ItemsSource="{Binding MyOutputBits}" SelectionMode="Multiple" SelectionChanged="myListBoxOutputBits_SelectionChanged" Grid.Row="1" Grid.Column="1" Grid.RowSpan="1">
+            <TextBox x:Name="Tb_Port" HorizontalAlignment="Center" Height="26" TextWrapping="Wrap" Text="502" VerticalAlignment="Center" Width="75" Grid.Row="1" Grid.Column="1"/>
+            <Button x:Name="Btn_Stop" Content="Stop" HorizontalAlignment="Center" Height="32"  VerticalAlignment="Center" Width="52" Click="Btn_Stop_Click" Grid.Row="1" Grid.Column="2"/>
+            <ListBox x:Name="myListSlaves" ItemsSource="{Binding MyOutputBits}" SelectionMode="Multiple" SelectionChanged="myListSlaves_SelectionChanged" Grid.Column="1" Grid.RowSpan="2" Grid.Row="1" Grid.ColumnSpan="2" Margin="0,85,0,0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}" />
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Grid Name ="Gv_OutputProp" Grid.Row="1" Grid.Column="0">
+            <Button x:Name="Btn_ClearLogs" Content="Clear Logs" HorizontalAlignment="Left" Height="30" VerticalAlignment="Bottom" Width="64" Click="Btn_ClearLogs_Click" Grid.Column="0" Grid.Row="2"/>
+        </Grid>
+
+        <Grid Name="Gv_Log" Grid.Column="0" Grid.ColumnSpan="2" Grid.RowSpan="3" Margin="0,255,0,0">
+            <TextBlock x:Name="Tbl_Infos" HorizontalAlignment="Left" Height="350" TextWrapping="Wrap" VerticalAlignment="Top" Text="Infos :" Grid.ColumnSpan="2"/>
+        </Grid>
+
+        <Grid Name="Gv_DefinitionSl" Grid.Row="0" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="70*"/>
+            </Grid.RowDefinitions>
+            <Grid x:Name="GvSlProperties" Grid.Row="2" Grid.RowSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60*"/>
+                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="25*"/>
+                    <RowDefinition Height="25*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="32*"/>
+                    <ColumnDefinition Width="32*"/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0" Grid.Row="0" Margin="0,0,0,30" Grid.RowSpan="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="25*"/>
+                        <RowDefinition Height="25*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="40*"/>
+                        <ColumnDefinition Width="60*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="Lb_Name_Sl" Content="Name : " HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="61" Grid.Column="0" Grid.Row="0"/>
+                    <TextBox x:Name="Tb_Name_Sl" HorizontalAlignment="Center" Height="22" TextWrapping="Wrap" Text="Coco" VerticalAlignment="Center" Width="83" Grid.Column="1"/>
+                    <Label x:Name="Lb_ByteId_Sl" Content="ByteId : " HorizontalAlignment="Left" Height="30" VerticalAlignment="Center" Width="45" Grid.Row="1" Grid.Column="0"/>
+                    <TextBox x:Name="Tb_ByteId_Sl" HorizontalAlignment="Center" Height="30" TextWrapping="Wrap" Text="1" VerticalAlignment="Center" Width="83" Grid.Column="1" Grid.Row="1"/>
+                </Grid>
+                <Button x:Name="Btn_Create" Content="Create SL" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Btn_CreateSl_Click" Height="20" Width="78" Grid.Column="1"/>
+                <Label Name="Lb_Color_Sl" Content="Color : "  HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="1" Height="26" Width="48"/>
+                <ListBox x:Name="LB_SlColor" ItemsSource="{Binding SlColor}" SelectionMode="Single" Grid.Column="1" Grid.Row="1" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Label Name="Lb_NbWord_Sl" Content="Word : " HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="2" Height="26" Width="48"/>
+                <ListBox x:Name="LB_NbWord" ItemsSource="{Binding SlNbWord}" SelectionMode="Single" Grid.Row="1" Grid.Column="1" Margin="0,30,0,30" Grid.RowSpan="3" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Label Name="Lb_InputBit_Sl" Content="Bit :" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="3" Height="26" Width="30"/>
+                <ListBox x:Name="LB_InputBit_Sl" ItemsSource="{Binding SlInputBit}" SelectionMode="Single" Grid.Row="3" Grid.Column="1" Margin="0,0,0,30" Grid.RowSpan="2" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <Label Name="Lb_SeqActive" Content="Seq Active :" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Column="0" Grid.Row="4" Height="26" Width="71"/>
+                <TextBox Name="Tb_SeqActive" HorizontalAlignment="Left" Grid.Column="1" TextWrapping="Wrap" Text="400" VerticalAlignment="Center" Grid.Row="4" Height="20" Width="80"/>
+                <Label Name="Lb_SeqInactive" Content="Seq Inactive : " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="5" Height="30" Width="138" Margin="0,0,11,0"/>
+                <TextBox Name="Tb_SeqInactive" HorizontalAlignment="Left" Grid.Column="1" TextWrapping="Wrap" Text="600" VerticalAlignment="Center" Grid.Row="5" Height="20" Width="80"/>
+                <Label Name="Lb_Repetition" Content="Repetition : " HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="6" Height="29" Width="128"/>
+                <TextBox Name="Tb_Repetition" HorizontalAlignment="Left" Grid.Column="1" TextWrapping="Wrap" Text="20" VerticalAlignment="Center" Grid.Row="6" Height="20" Width="80"/>
+            </Grid>
+
+        </Grid>
+
+        <Grid Name="Gv_Modbus" Grid.Row="0" Grid.Column="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="15*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="19*"/>
+                <RowDefinition Height="32*"/>
+                <RowDefinition Height="32*"/>
+            </Grid.RowDefinitions>
+            <Button x:Name="Btn_AddOutputBit" Content="Add" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Btn_AddOutputBit_Click" Grid.Row="1" Grid.Column="0" Height="20" Width="26"/>
+            <Label x:Name="Lb_InputWords" Content="Input Words:" HorizontalAlignment="Right" Height="24" VerticalAlignment="Center" Width="81" Grid.Row="0" Grid.Column="0"/>
+            <ListBox x:Name="myListBoxInputBits" ItemsSource="{Binding MyInputBits}" SelectionMode="Single" SelectionChanged="myListBoxInputBits_SelectionChanged" Grid.Row="0" Grid.Column="1" Grid.RowSpan="1">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Label x:Name="Lb_Output" Content="Output Bits" HorizontalAlignment="Right" Height="24" VerticalAlignment="Center" Width="70" Grid.Column="0" Grid.Row="1"/>
+            <ListBox x:Name="myListBoxOutputBits" ItemsSource="{Binding MyOutputBits}" SelectionMode="Multiple" SelectionChanged="myListBoxOutputBits_SelectionChanged" Grid.Column="1" Grid.RowSpan="2" Margin="0,68,0,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <Grid Name ="Gv_OutputProp" Grid.Row ="1" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,68,58,0" Grid.RowSpan="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="25*"/>
                     <ColumnDefinition Width="25*"/>
@@ -97,32 +158,12 @@
                     <RowDefinition Height="15*"/>
                 </Grid.RowDefinitions>
                 <Label x:Name="Lb_StartAdress" Content="Start Adress :" HorizontalAlignment="Left" Height="32" VerticalAlignment="Top" Width="78" Grid.Row="0" Grid.Column="0"/>
-                <TextBox x:Name="Tb_StartAdress" HorizontalAlignment="Center" Height="33" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Grid.Row="0" Grid.Column="1" Width="116"/>
+                <TextBox x:Name="Tb_StartAdress" HorizontalAlignment="Left" Height="33" TextWrapping="Wrap" Text="0" VerticalAlignment="Center" Width="66" Margin="18,0,0,0" Grid.Column="1"/>
                 <Label x:Name="Lb_OutputWords" Content="Message :" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="1" Width="58"/>
                 <Button x:Name="Btn_ClearMessage" Content="Clear" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Click="Btn_ClearMessage_Click"/>
                 <TextBlock x:Name="Tbl_OutputBits" HorizontalAlignment="Left" Height="29" TextWrapping="Wrap" VerticalAlignment="Center" Width="84" RenderTransformOrigin="0.575,0.592" Grid.Row="1" Grid.Column="1"/>
-                <Label x:Name="Lb_Receiver" Content="Receiver :" HorizontalAlignment="Left" VerticalAlignment="Center" Grid.Row="2"/>
-
                 <Button x:Name="Btn_SendMessage" Content="Send" HorizontalAlignment="Center" VerticalAlignment="Center" Click="Btn_SendMessage_Click" Grid.Row="3" Grid.ColumnSpan="2" Width="115"/>
             </Grid>
-        </Grid>
-        <Grid Name="Gv_Input" Grid.Row="1" Grid.Column="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="15*"/>
-                <ColumnDefinition Width="50*"/>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="15*"/>
-                <RowDefinition Height="50*"/>
-            </Grid.RowDefinitions>
-            <Label x:Name="Lb_InputWords" Content="Input Words:" HorizontalAlignment="Center" Height="24" VerticalAlignment="Top" Width="81" Grid.Column="0" Grid.Row="0"/>
-            <ListBox x:Name="myListBoxInputBits" ItemsSource="{Binding MyInputBits}" SelectionMode="Single" SelectionChanged="myListBoxInputBits_SelectionChanged"  Grid.Row="0" Grid.Column="1" Grid.RowSpan="2">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
         </Grid>
     </Grid>
 </Window>

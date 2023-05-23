@@ -51,7 +51,6 @@ namespace ModbusSlaveUi
                 {
                     SlaveTcpListener.Start();
                     CreateMySlaveNetwork(SlaveTcpListener);
-                    //Network.ListenAsync().GetAwaiter().GetResult();
                     Network.ListenAsync(NetworkToken.Token).GetAwaiter().GetResult();
                 }
 
